@@ -4,7 +4,6 @@ object ClipMonFrm: TClipMonFrm
   AlphaBlend = True
   AlphaBlendValue = 240
   BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsSingle
   Caption = 'Monitor'
   ClientHeight = 243
   ClientWidth = 384
@@ -121,7 +120,6 @@ object ClipMonFrm: TClipMonFrm
         TabOrder = 2
         Text = ''
         TextHint = 'C:\MyProjects'
-        ExplicitWidth = 426
       end
       object edtExcluded: TLabeledEdit
         Left = 15
@@ -138,7 +136,6 @@ object ClipMonFrm: TClipMonFrm
         TabOrder = 3
         Text = ''
         TextHint = 'bin;C:\MyProjects\3rd_party'
-        ExplicitWidth = 426
       end
     end
   end
