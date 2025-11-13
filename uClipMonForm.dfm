@@ -48,9 +48,10 @@ object ClipMonFrm: TClipMonFrm
       Top = 6
       Width = 75
       Height = 25
+      Hint = 'Close without saving.'
       Anchors = [akTop, akRight]
       Cancel = True
-      Caption = 'Cancel'
+      Caption = 'Close'
       ModalResult = 2
       TabOrder = 1
       OnClick = btnCancelClick
@@ -61,7 +62,7 @@ object ClipMonFrm: TClipMonFrm
     Top = 0
     Width = 384
     Height = 210
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet

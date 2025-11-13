@@ -132,10 +132,11 @@ end;
 -------------------------------------------------------------------------------------------------------------}
 procedure TFileFromClipboard.Execute;
 begin
-  ProcessClipboard;
+  //ProcessClipboard;
 end;
 
 
+// Why is this called twice?
 procedure TFileFromClipboard.ProcessClipboard;
 var
   ClipboardText, Line, FileName, FullPath, UnitName: string;
@@ -164,7 +165,9 @@ begin
         Exit;                          // Silently handle access denied or other clipboard errors like "Cannot open clipboard: Access is denied"
       end;
   end;
-  Log('First 512 chars in clipboard: '+ Copy(ClipboardText, 1, 512));
+
+  Log('ProcessClipboard: '+ UnitName);
+  Log('  First 512 chars: '+ Copy(ClipboardText, 1, 512));
 
   // Don't open twice
   if DontOpenTwice then
@@ -177,10 +180,16 @@ begin
     for i:= 0 to Lines.Count - 1 do
     begin
       Line:= Trim(Lines[I]);
-      if Line = '' then Continue;
+      if Line = '' then Continue;   
+      if Line = '' then
+        begin
+          Log('  Line is empty. Continue.');
+          Continue;
+         end;
+		 	  
       if Pos('.', Line) < 1 then
       begin
-        Log('Text in clipbboard: Not a file.');
+        Log('  Text in clipbboard: Not a file.');
         Continue;
       end;
 
@@ -190,11 +199,11 @@ begin
       // Handle full paths or unit names (e.g., c:\path\file.pas or MyBase.MyUnit.pas)
       UnitName:= TryExtractUnitName(Line);
       FileName:= ExtractFileName(UnitName);
-      Log('Expert.ProcessClipboard.UnitName: '+ UnitName);
+      Log('  UnitName: '+ UnitName);
 
       if NOT IsDelphiFile(FileName) then
         begin
-          Log('Text in clipbboard: Not a Dephi file: '+ FileName);
+          Log('  Text in clipbboard: Not a Dephi file: '+ FileName);
           Continue;
         end;
 
@@ -279,7 +288,9 @@ begin
 
       if Pos(ExcludePath2, LowerCase(FullPath)) > 0 then
       begin
-        Log('Path excluded! ExcludePath: '+ExcludePath2+ #13 + 'Input file: '+ FullPath);
+        Log('Path excluded!'
+               + #13 + ' ExcludePath: '+ExcludePath2
+               + #13 + ' Input file: '+ FullPath);
         Exit(True);
       end;
     end;
@@ -359,7 +370,6 @@ end;
 procedure TFileFromClipboard.AfterCompile(Succeeded: Boolean);
 begin
   // AfterCompile is often used for initialization, but since we use the form's handle in the constructor, this is only used for an initial check if needed.
-  // ProcessClipboard; Optional
 end;
 
 procedure TFileFromClipboard.BeforeCompile(const Project: IOTAProject; var Cancel: Boolean);
